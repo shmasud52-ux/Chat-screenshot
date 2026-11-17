@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4f6fb">
+  <title>SocialChat — Chat Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">✦</div><div><b>SocialChat</b><small>Chat Studio</small></div></div>
+      <div class="side-title">WORKSPACE</div>
+      <button class="nav active" data-view="chats"><span>▣</span> Chats <span class="nav-count" id="chatCount">0</span></button>
+      <button class="nav" data-view="profiles"><span>◎</span> Profiles</button>
+      <button class="nav" data-view="appearance"><span>◐</span> Appearance</button>
+      <div class="side-bottom"><div class="mini-profile" id="activeProfileMini"></div><small>Saved on this device</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-brand" id="mobileMenu">☰</button>
+        <div><b id="pageTitle">Chats</b><small id="pageSubtitle">Your conversations, your style.</small></div>
+        <div class="top-actions"><span class="local-pill"><i></i> Local mode</span><button class="icon-btn" id="settingsBtn" title="Appearance">⚙</button></div>
+      </header>
+
+      <section class="view active" id="view-chats">
+        <div class="chat-layout">
+          <section class="conversation-list">
+            <div class="section-head"><div><h2>Messages</h2><p>Choose a conversation</p></div><button class="primary-btn" id="newChatBtn">＋ New chat</button></div>
+            <div class="search-wrap"><span>⌕</span><input id="chatSearch" placeholder="Search chats or people"></div>
+            <div id="chatList" class="chat-list"></div>
+          </section>
+
+          <section class="chat-panel" id="chatPanel">
+            <div class="empty-chat" id="emptyChat"><div class="empty-icon">✉</div><h2>Your chat space</h2><p>Open a conversation or create a new one.</p><button class="primary-btn" id="emptyNewChat">Start chatting</button></div>
+            <div id="conversation" class="conversation hidden">
+              <div class="chat-header">
+                <div class="person-head"><img id="peerAvatar" alt=""><div><b id="peerName">Contact</b><small id="peerStatus">Active now</small></div></div>
+                <div class="header-actions"><button class="icon-btn" id="wallpaperBtn" title="Change chat background">▧</button><button class="icon-btn" id="chatInfoBtn" title="Chat details">ⓘ</button></div>
+              </div>
+              <div class="chat-meta"><span id="themeLabel">Messenger style</span><button id="themeQuick">Change style</button></div>
+              <div class="messages" id="messages">
+                <div class="date-chip">TODAY</div>
+              </div>
+              <div class="composer">
+                <button class="compose-icon" id="emojiBtn" title="Emoji">☺</button>
+                <button class="compose-icon" id="attachBtn" title="Attach image">＋</button>
+                <input type="file" id="imageInput" accept="image/*" hidden>
+                <textarea id="messageInput" rows="1" placeholder="Write a message…"></textarea>
+                <button class="send-btn" id="sendBtn" title="Send message">➤</button>
+              </div>
+              <div class="switcher"><span>Sending as</span><button id="senderSwitch"></button><span class="switch-hint">Tap to switch sides</span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="view-profiles">
+        <div class="content-page"><div class="section-head"><div><h2>Profiles</h2><p>Create and manage both sides of your conversations.</p></div><button class="primary-btn" id="addProfileBtn">＋ Add profile</button></div><div class="profile-grid" id="profileGrid"></div></div>
+      </section>
+
+      <section class="view" id="view-appearance">
+        <div class="content-page"><div class="section-head"><div><h2>Appearance</h2><p>Choose the look of your chat window.</p></div></div>
+          <div class="settings-card"><h3>Chat style</h3><p>Switch between familiar social app-inspired layouts.</p><div class="theme-options">
+            <button class="theme-option selected" data-theme="messenger"><span class="theme-preview messenger-preview">•••</span><b>Messenger</b><small>Blue accents</small></button>
+            <button class="theme-option" data-theme="tiktok"><span class="theme-preview tiktok-preview">♪</span><b>TikTok</b><small>Dark & bold</small></button>
+            <button class="theme-option" data-theme="whatsapp"><span class="theme-preview whatsapp-preview">✓</span><b>WhatsApp</b><small>Green accents</small></button>
+            <button class="theme-option" data-theme="instagram"><span class="theme-preview insta-preview">◎</span><b>Instagram</b><small>Vibrant accents</small></button>
+          </div></div>
+          <div class="settings-card"><h3>Default chat wallpaper</h3><p>Upload your own photo. Each conversation can also have its own wallpaper.</p><div class="wallpaper-actions"><label class="upload-btn">↑ Upload photo<input id="defaultWallpaperInput" type="file" accept="image/*" hidden></label><button class="secondary-btn" id="resetDefaultWallpaper">Reset wallpaper</button></div><div class="wallpaper-preview" id="defaultWallpaperPreview">Preview</div></div>
+          <div class="settings-card"><h3>Data & privacy</h3><p>Profiles, messages and wallpaper settings are saved in this browser on this device.</p><button class="secondary-btn" id="exportDataBtn">Export backup (JSON)</button> <button class="secondary-btn danger" id="clearDataBtn">Clear all local data</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="profileDialog" class="modal">
+    <form method="dialog" id="profileForm">
+      <div class="modal-head"><div><h2 id="profileDialogTitle">Create profile</h2><p>Set up a chat identity.</p></div><button class="icon-btn close-dialog" value="cancel">×</button></div>
+      <input type="hidden" id="profileId">
+      <div class="avatar-editor"><img id="avatarPreview" alt=""><label class="upload-btn">Change photo<input id="avatarInput" type="file" accept="image/*" hidden></label></div>
+      <label class="field-label">Display name<input id="profileName" required maxlength="40" placeholder="e.g. Alex"></label>
+      <label class="field-label">Unique ID<input id="profileHandle" maxlength="30" placeholder="@alex123"></label>
+      <label class="field-label">Bio<input id="profileBio" maxlength="90" placeholder="A little about this profile"></label>
+      <div class="modal-actions"><button type="button" class="secondary-btn" id="deleteProfileBtn">Delete</button><span></span><button class="secondary-btn" value="cancel">Cancel</button><button class="primary-btn" id="saveProfileBtn" value="save">Save profile</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="newChatDialog" class="modal">
+    <form method="dialog" id="newChatForm">
+      <div class="modal-head"><div><h2>New conversation</h2><p>Select two profiles for this chat.</p></div><button class="icon-btn close-dialog" value="cancel">×</button></div>
+      <label class="field-label">Your profile<select id="myProfileSelect" required></select></label>
+      <label class="field-label">Chat with<select id="peerProfileSelect" required></select></label>
+      <label class="field-label">Chat style<select id="newChatTheme"><option value="messenger">Messenger</option><option value="tiktok">TikTok</option><option value="whatsapp">WhatsApp</option><option value="instagram">Instagram</option></select></label>
+      <div class="modal-actions"><span></span><button class="secondary-btn" value="cancel">Cancel</button><button class="primary-btn" id="createChatBtn" value="create">Create chat</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="wallpaperDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-head"><div><h2>Chat wallpaper</h2><p>Personalize this conversation.</p></div><button class="icon-btn close-dialog" value="cancel">×</button></div>
+      <label class="upload-btn wide-upload">↑ Upload wallpaper photo<input id="chatWallpaperInput" type="file" accept="image/*" hidden></label>
+      <div class="wallpaper-swatches"><button type="button" data-bg="plain">Plain</button><button type="button" data-bg="lavender">Lavender</button><button type="button" data-bg="mint">Mint</button><button type="button" data-bg="night">Night</button></div>
+      <button class="secondary-btn" id="resetChatWallpaper" value="reset">Reset this chat</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
